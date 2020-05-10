@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dominio;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,7 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+            //Definimos la migracion de las tablas
             var hostserver = CreateHostBuilder(args).Build();
             using(var ambiente = hostserver.Services.CreateScope())
             {
@@ -23,8 +26,10 @@ namespace WebAPI
 
                 try
                 {
+                    var userManager = services.GetRequiredService<UserManager<Usuario>>();
                     var context = services.GetRequiredService<CursosOnlineContext>();
                     context.Database.Migrate();
+                    DataPrueba.InsertarData(context, userManager).Wait(); // Usamos Wait para poder ejecutar el motodo asincrono
                 }
                 catch (Exception e)
                 {

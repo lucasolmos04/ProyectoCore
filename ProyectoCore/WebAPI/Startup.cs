@@ -6,6 +6,7 @@ using Aplicacion.Cursos;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistencia;
@@ -50,6 +52,8 @@ namespace WebAPI
             identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
             // Manejo del loggin
             identityBuilder.AddSignInManager<SignInManager<Usuario>>();
+            // TryAddSingleton: el registro no se agregará cuando ya existan registros para el tipo de servicio dado. 
+            services.TryAddSingleton<ISystemClock, SystemClock>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
