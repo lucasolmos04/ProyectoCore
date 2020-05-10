@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Aplicacion.Cursos;
+using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +44,12 @@ namespace WebAPI
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
             // Indicamos que clase es al que se va a validar RegisterValidatorsFromAssemblyContaining
             services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+            // Agregamos como servicio a Usuarios con Core Identity
+            var builder = services.AddIdentityCore<Usuario>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
+            // Manejo del loggin
+            identityBuilder.AddSignInManager<SignInManager<Usuario>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
