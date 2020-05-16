@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Aplicacion.Cursos;
 using Dominio;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
