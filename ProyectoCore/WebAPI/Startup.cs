@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Aplicacion.Contratos;
 using Aplicacion.Cursos;
+using AutoMapper;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -82,6 +83,7 @@ namespace WebAPI
 
             services.AddScoped<IJwtGenerador, JwtGenerador>();
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+            services.AddAutoMapper(typeof(Consulta.Manejador));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
