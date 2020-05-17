@@ -21,6 +21,7 @@ namespace Aplicacion.Cursos
             public string Titulo { get; set; }
             public string Descripcion { get; set; }
             public DateTime? FechaPublicacion { get; set; }
+            public List<Guid> ListInstructor { get; set; }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -44,14 +45,32 @@ namespace Aplicacion.Cursos
 
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                Guid _cursoId = Guid.NewGuid();
                 var curso = new Curso
                 {
+                    CursoId = _cursoId,
                     Titulo = request.Titulo,
                     Descripcion = request.Descripcion,
                     FechaPublicacion = request.FechaPublicacion
                 };
 
                 _context.Curso.Add(curso);
+
+                // Validamos si hay instructores, en caso de haber, inserta
+                if (request.ListInstructor != null)
+                {
+                    foreach (var id in request.ListInstructor)
+                    {
+                        var cursoInstructor = new CursoInstructor
+                        {
+                            CursoId = _cursoId,
+                            InstructorId = id
+                        };
+
+                        _context.CursoInstructor.Add(cursoInstructor);
+                    }
+                }
+                
                 var valor = await _context.SaveChangesAsync();
 
                 if (valor > 0)
