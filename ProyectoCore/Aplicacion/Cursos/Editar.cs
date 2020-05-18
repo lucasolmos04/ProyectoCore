@@ -1,9 +1,11 @@
 ﻿using Aplicacion.ManejadorError;
+using Dominio;
 using FluentValidation;
 using MediatR;
 using Persistencia;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -19,10 +21,11 @@ namespace Aplicacion.Cursos
     {
         public class Ejecuta : IRequest
         {
-            public int CursoId { get; set; }
+            public Guid CursoId { get; set; }
             public string Titulo { get; set; }
             public string Descripcion { get; set; }
             public DateTime? FechaPublicacion { get; set; }
+            public List<Guid> ListaInstructor { get; set; }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -55,6 +58,31 @@ namespace Aplicacion.Cursos
                 curso.Titulo = request.Titulo ?? curso.Titulo;
                 curso.Descripcion = request.Descripcion ?? curso.Descripcion;
                 curso.FechaPublicacion = request.FechaPublicacion ?? curso.FechaPublicacion;
+
+                if (request.ListaInstructor != null)
+                {
+                    if (request.ListaInstructor.Count > 0)
+                    {
+                        var instrucoresBD = _context.CursoInstructor.Where(x => x.CursoId == request.CursoId);
+                        // Eliminados todos los Instructores que estan en la base
+                        foreach (var instructor in instrucoresBD)
+                        {
+                            _context.CursoInstructor.Remove(instructor);
+                        }
+
+                        // Insertamos todos los instructores nuevos traidos desde el front
+                        foreach (var ids in request.ListaInstructor)
+                        {
+                            var nuevoInstructor = new CursoInstructor
+                            {
+                                CursoId = request.CursoId,
+                                InstructorId = ids
+                            };
+
+                            _context.CursoInstructor.Add(nuevoInstructor);
+                        }
+                    }
+                }
 
                 var result = await _context.SaveChangesAsync();
                 if (result > 0)
