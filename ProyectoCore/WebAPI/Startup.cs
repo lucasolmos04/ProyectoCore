@@ -26,6 +26,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Persistencia;
+using Persistencia.DapperConexion;
 using Seguridad.TokenSeguridad;
 using WebAPI.Middleware;
 
@@ -50,6 +51,9 @@ namespace WebAPI
             services.AddDbContext<CursosOnlineContext>(opt => {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            // Agregamos conexion para Dapper
+            services.Configure<ConexionConfiguracion>(Configuration.GetSection("DefaultConnection"));
 
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
             // Indicamos que clase es al que se va a validar RegisterValidatorsFromAssemblyContaining
