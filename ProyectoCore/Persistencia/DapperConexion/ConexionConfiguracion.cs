@@ -6,6 +6,7 @@ namespace Persistencia.DapperConexion
 {
     public class ConexionConfiguracion
     {
-        public string ConexionSQL { get; set; }
+        // Cadena de conexion 
+        public string DefaultConnection { get; set; }
     }
 }

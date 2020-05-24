@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace Persistencia.DapperConexion.Instructor
 {
+    /// <summary>
+    /// Operaciones a realizar sobre un Instructor
+    /// </summary>
     public interface IInstructor
     {
-        Task<IList<InstructorModel>> ObtenerLista();
+        Task<IEnumerable<InstructorModel>> ObtenerLista();
         Task<InstructorModel> ObtenerPorId(Guid id);
         Task<int> Nuevo(InstructorModel param);
         Task<int> Actualizar(InstructorModel param);

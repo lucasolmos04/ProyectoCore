@@ -27,6 +27,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Persistencia;
 using Persistencia.DapperConexion;
+using Persistencia.DapperConexion.Instructor;
 using Seguridad.TokenSeguridad;
 using WebAPI.Middleware;
 
@@ -52,8 +53,9 @@ namespace WebAPI
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddOptions();
             // Agregamos conexion para Dapper
-            services.Configure<ConexionConfiguracion>(Configuration.GetSection("DefaultConnection"));
+            services.Configure<ConexionConfiguracion>(Configuration.GetSection("ConnectionStrings"));
 
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
             // Indicamos que clase es al que se va a validar RegisterValidatorsFromAssemblyContaining
@@ -88,6 +90,9 @@ namespace WebAPI
             services.AddScoped<IJwtGenerador, JwtGenerador>();
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
             services.AddAutoMapper(typeof(Consulta.Manejador));
+
+            services.AddTransient<IFactoryConnection, FactoryConnection>();
+            services.AddScoped<IInstructor, InstructorRepositorio>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
