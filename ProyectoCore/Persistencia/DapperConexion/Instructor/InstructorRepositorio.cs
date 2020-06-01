@@ -14,19 +14,81 @@ namespace Persistencia.DapperConexion.Instructor
         {
             _factoryConnection = factoryConnection;
         }
-        public Task<int> Actualizar(InstructorModel param)
+        public async Task<int> Actualizar(Guid instructorId, string nombre, string apellido, string titulo)
         {
-            throw new NotImplementedException();
+            var storeProcedure = "usp_instructor_editar";
+            try
+            {
+                var connection = _factoryConnection.GetConnection();
+                var result = await connection.ExecuteAsync(storeProcedure,
+                    new
+                    {
+                        InstructorId = instructorId,
+                        Nombre = nombre,
+                        Apellido = apellido,
+                        Titulo = titulo
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                _factoryConnection.CloseConnection();
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo editar la data del instructor", e);
+            }
         }
 
-        public Task<int> Eliminar(Guid id)
+        public async Task<int> Eliminar(Guid id)
         {
-            throw new NotImplementedException();
+            var storeProcedure = "usp_instructor_elimina";
+            try
+            {
+                var connection = _factoryConnection.GetConnection();
+                var result = await connection.ExecuteAsync(storeProcedure,
+                    new
+                    {
+                        InstructorId = id
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                _factoryConnection.CloseConnection();
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo eliminar un instructor", e);
+            }
+           
         }
 
-        public Task<int> Nuevo(InstructorModel param)
+        public async Task<int> Nuevo(string nombre, string apellidos, string titulo)
         {
-            throw new NotImplementedException();
+            var storeProcedure = "usp_instructor_nuevo";
+            try
+            {
+                var connection = _factoryConnection.GetConnection();
+                var result = await connection.ExecuteAsync(storeProcedure, new
+                {
+                    InstructorId = Guid.NewGuid(),
+                    Nombre = nombre,
+                    Apellido = apellidos,
+                    Titulo = titulo
+                },
+                commandType: CommandType.StoredProcedure);
+
+                _factoryConnection.CloseConnection();
+
+                return result;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo realizar la insercion de un nuevo Instructor", e);
+            }
         }
 
         /// <summary>
@@ -54,9 +116,27 @@ namespace Persistencia.DapperConexion.Instructor
             return instructorList;
         }
 
-        public Task<InstructorModel> ObtenerPorId(Guid id)
+        public async Task<InstructorModel> ObtenerPorId(Guid id)
         {
-            throw new NotImplementedException();
+            var storeProcedure = "usp_obtener_instructor_por_id";
+            InstructorModel instructor = null;
+            try
+            {
+                var connection = _factoryConnection.GetConnection();
+                instructor = await connection.QueryFirstAsync<InstructorModel>(storeProcedure,
+                    new
+                    {
+                        Id = id
+                    },
+                    commandType:CommandType.StoredProcedure
+                );
+                return instructor;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo encontrar el Instructor", e) ;
+            }
         }
     }
 }
