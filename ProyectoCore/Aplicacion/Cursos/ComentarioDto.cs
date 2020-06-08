@@ -11,5 +11,6 @@ namespace Aplicacion.Cursos
         public int Puntaje { get; set; }
         public string ComentarioTexto { get; set; }
         public Guid CursoId { get; set; }
+        public DateTime? FechaCreacion { get; set; }
     }
 }

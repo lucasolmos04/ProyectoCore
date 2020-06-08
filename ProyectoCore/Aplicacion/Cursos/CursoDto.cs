@@ -13,6 +13,7 @@ namespace Aplicacion.Cursos
         public byte[] FotoPortada { get; set; }
         public ICollection<InstructorDto> Instructores { get; set; }
         public PrecioDto Precio { get; set; }
+        public DateTime? FechaCreacion { get; set; }
         public ICollection<ComentarioDto> Comentarios { get; set; }
 
     }
