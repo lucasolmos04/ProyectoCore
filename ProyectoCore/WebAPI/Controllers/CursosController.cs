@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Persistencia.DapperConexion.Paginacion;
 
 namespace WebAPI.Controllers
 {
@@ -47,6 +48,12 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<Unit>> Eliminar(Guid id)
         {
             return await Mediator.Send(new Eliminar.Ejecuta { Id = id });
+        }
+
+        [HttpPost("report")]
+        public async Task<ActionResult<PaginacionModel>> Report(PaginacionCurso.Ejecuta data)
+        {
+            return await Mediator.Send(data);
         }
     }
 }
