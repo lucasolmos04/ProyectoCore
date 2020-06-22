@@ -53,12 +53,14 @@ namespace Aplicacion.Seguridad
                     }
 
                     var result = await _signInManager.CheckPasswordSignInAsync(usuario, request.Password, false);
+                    var resultRoles = await _userManager.GetRolesAsync(usuario); // Roles del usuario
+                    var listaRoles = new List<string>(resultRoles);
 
                     if (result.Succeeded)
                     {
                         return new UsuarioData {
                             NombreCompleto = usuario.NombreCompleto,
-                            Token = _jwyGenerador.CrearToken(usuario),
+                            Token = _jwyGenerador.CrearToken(usuario, listaRoles),
                             Username = usuario.UserName,
                             Email = usuario.Email,
                             Imagen = null
