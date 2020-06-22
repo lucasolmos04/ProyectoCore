@@ -70,6 +70,14 @@ namespace WebAPI
             // Agregamos como servicio a Usuarios con Core Identity
             var builder = services.AddIdentityCore<Usuario>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+
+            // ***** ROL Manager
+            // Agregamos los Roles 
+            identityBuilder.AddRoles<IdentityRole>();
+            // Data de los roles dentro de la data del token
+            identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<Usuario, IdentityRole>>();
+            // ****************
+
             identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
             // Manejo del loggin
             identityBuilder.AddSignInManager<SignInManager<Usuario>>();
