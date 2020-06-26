@@ -30,5 +30,11 @@ namespace WebAPI.Controllers
         {
             return await Mediator.Send(new UsuarioActual.Ejecutar());
         }
+
+        [HttpPut]
+        public async Task<ActionResult<UsuarioData>> Actualizar(UsuarioActualizar.Ejecuta param)
+        {
+            return await Mediator.Send(param);
+        }
     }
 }
