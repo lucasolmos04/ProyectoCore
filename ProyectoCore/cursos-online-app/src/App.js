@@ -7,11 +7,13 @@ import Perfil from "./componentes/seguridad/PerfilUsuario";
 import PerfilUsuario from "./componentes/seguridad/PerfilUsuario";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid } from "@material-ui/core";
+import AppNavbar from "./componentes/Navegacion/AppNavbar";
 
 function App() {
   return (
     <Router>
       <MuithemeProvider theme={theme}>
+        <AppNavbar />
         <Grid container>
           <Switch>
             <Route exact path="/auth/login" component={Login} />
