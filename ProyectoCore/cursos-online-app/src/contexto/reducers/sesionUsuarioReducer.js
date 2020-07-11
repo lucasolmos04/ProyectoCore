@@ -36,6 +36,8 @@ const sesionUsuarioReducer = (state = initalState, action) => {
         usuario: action.nuevoUsuario,
         autenticado: action.autenticado,
       };
+    default:
+      return state;
   }
 };
 
