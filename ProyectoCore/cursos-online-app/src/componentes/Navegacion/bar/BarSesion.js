@@ -8,6 +8,7 @@ import {
   Avatar,
 } from "@material-ui/core";
 import FotoUsuarioTemp from "../../../logo.svg";
+import { useStateValue } from "../../../contexto/store";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const BarSesion = () => {
   const classes = useStyles();
+  const [{ sesionUsuario }, dispatch] = useStateValue();
   return (
     <Toolbar>
       <IconButton color="inherit">
@@ -42,7 +44,9 @@ const BarSesion = () => {
       <div className={classes.grow}></div>
       <div className={classes.seccionDesktop}>
         <Button color="inherit">Salir</Button>
-        <Button color="inherit">{"Nombre Usuario"}</Button>
+        <Button color="inherit">
+          {sesionUsuario ? sesionUsuario.usuario.nombreCompleto : ""}
+        </Button>
         <Avatar src={FotoUsuarioTemp}></Avatar>
       </div>
       <div className={classes.seccionMobile}>

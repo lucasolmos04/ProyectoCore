@@ -11,8 +11,11 @@ import {
   obtenerUsuarioActual,
   actualizarUsuario,
 } from "../../actions/UsuarioAction";
+import { useStateValue } from "../../contexto/store";
 
 const PerfilUsuario = () => {
+  const [{ sesionUsuario }, dispatch] = useStateValue();
+
   const [usuario, setUsuario] = useState({
     nombreCompleto: "",
     email: "",
@@ -30,7 +33,7 @@ const PerfilUsuario = () => {
   };
 
   useEffect(() => {
-    obtenerUsuarioActual().then((response) => {
+    obtenerUsuarioActual(dispatch).then((response) => {
       console.log("Data del objeto response. Usuario actual", response);
       setUsuario(response.data);
     });
@@ -39,8 +42,28 @@ const PerfilUsuario = () => {
   const guardarUsuario = (e) => {
     e.preventDefault();
     actualizarUsuario(usuario).then((response) => {
-      console.log("se actualizo el usuario", usuario);
-      window.localStorage.setItem("token_seguridad", response.data.toke);
+      if (response.status === 200) {
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMensaje: {
+            open: true,
+            mensaje:
+              "Se guardaron exitosamente los cambios de Perfil de Usuario",
+          },
+        });
+        window.localStorage.setItem("token_seguridad", response.data.toke);
+      } else {
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMensaje: {
+            open: true,
+            mensaje:
+              "Errores al intentar guardar en: " +
+              Object.keys(response.data.errors),
+          },
+        });
+      }
+      // console.log("se actualizo el usuario", response);
     });
   };
 

@@ -16,7 +16,7 @@ export const initialState = {
 // la data que se va a modificar
 // action determina que va hacer con la data de arriba
 
-const sesionUsuarioReducer = (state = initalState, action) => {
+const sesionUsuarioReducer = (state = initialState, action) => {
   switch (action.type) {
     case "INICIAR_SESION":
       return {
