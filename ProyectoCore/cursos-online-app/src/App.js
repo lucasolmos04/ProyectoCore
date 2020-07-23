@@ -32,10 +32,10 @@ function App() {
   return (
     <React.Fragment>
       <Snackbar
-        anchorOrigin={{ vertial: "botton", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={openSnackbar ? openSnackbar.open : false}
         autoHideDuration={3000}
-        ContentProps={{ "area-describeby": "message-id" }}
+        ContentProps={{ "area-describedby": "message-id" }}
         message={
           <span id="message-id">
             {openSnackbar ? openSnackbar.mensaje : ""}

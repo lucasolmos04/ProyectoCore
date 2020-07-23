@@ -41,7 +41,7 @@ const PerfilUsuario = () => {
 
   const guardarUsuario = (e) => {
     e.preventDefault();
-    actualizarUsuario(usuario).then((response) => {
+    actualizarUsuario(usuario, dispatch).then((response) => {
       if (response.status === 200) {
         dispatch({
           type: "OPEN_SNACKBAR",
@@ -51,7 +51,7 @@ const PerfilUsuario = () => {
               "Se guardaron exitosamente los cambios de Perfil de Usuario",
           },
         });
-        window.localStorage.setItem("token_seguridad", response.data.toke);
+        window.localStorage.setItem("token_seguridad", response.data.token);
       } else {
         dispatch({
           type: "OPEN_SNACKBAR",
@@ -109,6 +109,7 @@ const PerfilUsuario = () => {
           <Grid item xs={12} md={6}>
             <TextField
               name="password"
+              value={usuario.password}
               onChange={ingresarValoresMemoria}
               type="password"
               variant="outlined"
@@ -119,6 +120,7 @@ const PerfilUsuario = () => {
           <Grid item xs={12} md={6}>
             <TextField
               name="confirmarPassword"
+              value={usuario.confirmarPassword}
               onChange={ingresarValoresMemoria}
               type="password"
               variant="outlined"
