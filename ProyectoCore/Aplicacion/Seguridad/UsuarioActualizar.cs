@@ -23,6 +23,7 @@ namespace Aplicacion.Seguridad
             public string Email { get; set; }
             public string Password { get; set; }
             public string Username { get; set; }
+            public ImagenGeneral ImagenPerfil { get; set; }
         }
 
         public class EjecutaValidador : AbstractValidator<Ejecuta>
@@ -64,6 +65,29 @@ namespace Aplicacion.Seguridad
                     throw new ManejadorExcepcion(System.Net.HttpStatusCode.InternalServerError, new { mensaje = "Este mail pertenece a otro usuario" });
                 }
 
+                // Buscamos la imagen por el id del Usuario
+                var resultImagen = await _cursosOnlineContext.Documento.Where(x => x.ObjetoReferencia == new Guid(usuarioIden.Id)).FirstOrDefaultAsync();
+                if (resultImagen == null)
+                {
+                    var imagen = new Documento
+                    {
+                        Contenido = Convert.FromBase64String(request.ImagenPerfil.Data),
+                        Nombre = request.ImagenPerfil.Nombre,
+                        Extension = request.ImagenPerfil.Extension,
+                        ObjetoReferencia = new Guid(usuarioIden.Id),
+                        DocumentoId = Guid.NewGuid(),
+                        FechaCreacion = DateTime.UtcNow
+                    };
+
+                    _cursosOnlineContext.Documento.Add(imagen);
+                }
+                else
+                {
+                    resultImagen.Contenido = Convert.FromBase64String(request.ImagenPerfil.Data);
+                    resultImagen.Nombre = request.ImagenPerfil.Nombre;
+                    resultImagen.Extension = request.ImagenPerfil.Extension;
+                }
+
                 usuarioIden.NombreCompleto = request.NombreCompleto;
                 usuarioIden.PasswordHash = _passwordHasher.HashPassword(usuarioIden, request.Password);
                 usuarioIden.Email = request.Email;
@@ -72,6 +96,20 @@ namespace Aplicacion.Seguridad
                 var resultRoles = await _userManager.GetRolesAsync(usuarioIden);
                 var listRoles = new List<string>(resultRoles);
 
+                var imagePerfil = await _cursosOnlineContext.Documento.Where(x => x.ObjetoReferencia == new Guid(usuarioIden.Id)).FirstAsync();
+                ImagenGeneral imagenGeneral = null;
+
+                if (imagePerfil != null)
+                {
+                    imagenGeneral = new ImagenGeneral
+                    {
+                        Data = Convert.ToBase64String(imagePerfil.Contenido),
+                        Nombre = imagePerfil.Nombre,
+                        Extension = imagePerfil.Extension
+                    };
+                }
+
+
                 if (resultadoUpdate.Succeeded)
                 {
                     return new UsuarioData
@@ -79,7 +117,8 @@ namespace Aplicacion.Seguridad
                         NombreCompleto = usuarioIden.NombreCompleto,
                         Username = usuarioIden.UserName,
                         Email = usuarioIden.Email,
-                        Token = _jwtGenerador.CrearToken(usuarioIden, listRoles)
+                        Token = _jwtGenerador.CrearToken(usuarioIden, listRoles),
+                        ImagenPerfil = imagenGeneral
                     };
                 }
 
