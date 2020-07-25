@@ -13,6 +13,9 @@ import {
 } from "@material-ui/core";
 import FotoUsuarioTemp from "../../../logo.svg";
 import { useStateValue } from "../../../contexto/store";
+import { MenuIzquierda } from "./menuIzquierda";
+import { withRouter } from "react-router-dom";
+import { MenuDerecha } from "./menuDerecha";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -45,16 +48,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BarSesion = () => {
+const BarSesion = (props) => {
   const classes = useStyles();
   const [{ sesionUsuario }, dispatch] = useStateValue();
   const [abrirMenuIzquierdo, setAbrirMenuIzquierda] = useState(false);
+  const [abrirMenuDerecha, setAbrirMenuDerecha] = useState(false);
+
   const cerrarMenuIzquierda = () => {
     setAbrirMenuIzquierda(false);
   };
+
   const abrirMenuIzquierdaAction = () => {
     setAbrirMenuIzquierda(true);
   };
+
+  const cerrarMenuDerecha = () => {
+    setAbrirMenuDerecha(false);
+  };
+
+  const salirSesionApp = () => {
+    localStorage.removeItem("token_seguridad");
+    props.history.push("/auth/login");
+  };
+
+  const abrirMenuDerechaAction = () => {
+    setAbrirMenuDerecha(true);
+  };
+
   return (
     <React.Fragment>
       <Drawer
@@ -67,15 +87,24 @@ const BarSesion = () => {
           onKeyDown={cerrarMenuIzquierda}
           onClick={cerrarMenuIzquierda}
         >
-          <List>
-            <ListItem button>
-              <i className="material-icons">account_box</i>
-              <ListItemText
-                classes={{ primary: classes.listItemText }}
-                primary="Perfil"
-              />
-            </ListItem>
-          </List>
+          <MenuIzquierda classes={classes} />
+        </div>
+      </Drawer>
+      <Drawer
+        open={abrirMenuDerecha}
+        onClose={cerrarMenuDerecha}
+        anchor="right"
+      >
+        <div
+          role="button"
+          onClick={cerrarMenuDerecha}
+          onKeyDown={cerrarMenuDerecha}
+        >
+          <MenuDerecha
+            classes={classes}
+            salirSesion={salirSesionApp}
+            usuario={sesionUsuario ? sesionUsuario.usuario : null}
+          />
         </div>
       </Drawer>
       <Toolbar>
@@ -92,7 +121,7 @@ const BarSesion = () => {
           <Avatar src={FotoUsuarioTemp}></Avatar>
         </div>
         <div className={classes.seccionMobile}>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={abrirMenuDerechaAction}>
             <i className="material-icons">more_vert</i>
           </IconButton>
         </div>
@@ -100,5 +129,5 @@ const BarSesion = () => {
     </React.Fragment>
   );
 };
-
-export default BarSesion;
+// Las propiedades de navegacion dentro de barsesion puedan trabajarse
+export default withRouter(BarSesion);
