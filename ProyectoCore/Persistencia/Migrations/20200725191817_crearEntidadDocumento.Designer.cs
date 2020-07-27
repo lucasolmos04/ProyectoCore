@@ -99,7 +99,7 @@ namespace Persistencia.Migrations
                     b.Property<byte[]>("Contenido")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("Extencion")
+                    b.Property<string>("Extension")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaCreacion")

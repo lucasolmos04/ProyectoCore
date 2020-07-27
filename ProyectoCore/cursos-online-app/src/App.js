@@ -28,8 +28,8 @@ function App() {
         });
     }
   }, [iniciaApp]);
-
-  return (
+  // iniciaApp bandera para detectar que sesion de usuario se inicio correctamente
+  return iniciaApp === false ? null : (
     <React.Fragment>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

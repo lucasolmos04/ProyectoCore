@@ -14,7 +14,7 @@ namespace Persistencia.Migrations
                     DocumentoId = table.Column<Guid>(nullable: false),
                     ObjetoReferencia = table.Column<Guid>(nullable: false),
                     Nombre = table.Column<string>(nullable: true),
-                    Extencion = table.Column<string>(nullable: true),
+                    Extension = table.Column<string>(nullable: true),
                     Contenido = table.Column<byte[]>(nullable: true),
                     FechaCreacion = table.Column<DateTime>(nullable: false)
                 },
