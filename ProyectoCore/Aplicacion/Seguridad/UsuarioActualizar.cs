@@ -83,9 +83,9 @@ namespace Aplicacion.Seguridad
                 }
                 else
                 {
-                    resultImagen.Contenido = Convert.FromBase64String(request.ImagenPerfil.Data);
-                    resultImagen.Nombre = request.ImagenPerfil.Nombre;
-                    resultImagen.Extension = request.ImagenPerfil.Extension;
+                    resultImagen.Contenido = request.ImagenPerfil != null ?  Convert.FromBase64String(request.ImagenPerfil.Data) : resultImagen.Contenido;
+                    resultImagen.Nombre = request.ImagenPerfil != null ? request.ImagenPerfil.Nombre : resultImagen.Nombre;
+                    resultImagen.Extension = request.ImagenPerfil != null ? request.ImagenPerfil.Extension : resultImagen.Extension;
                 }
 
                 usuarioIden.NombreCompleto = request.NombreCompleto;

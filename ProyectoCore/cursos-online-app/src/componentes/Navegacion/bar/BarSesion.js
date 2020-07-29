@@ -68,6 +68,14 @@ const BarSesion = (props) => {
 
   const salirSesionApp = () => {
     localStorage.removeItem("token_seguridad");
+    // props.history.push("/auth/login");
+
+    dispatch({
+      type: "SALIR_SESION",
+      nuevoUsuario: null,
+      autenticado: false,
+    });
+
     props.history.push("/auth/login");
   };
 
@@ -114,7 +122,9 @@ const BarSesion = (props) => {
         <Typography variant="h6">Cursos Online</Typography>
         <div className={classes.grow}></div>
         <div className={classes.seccionDesktop}>
-          <Button color="inherit">Salir</Button>
+          <Button color="inherit" onClick={salirSesionApp}>
+            Salir
+          </Button>
           <Button color="inherit">
             {sesionUsuario ? sesionUsuario.usuario.nombreCompleto : ""}
           </Button>

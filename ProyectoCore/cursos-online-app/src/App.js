@@ -10,6 +10,7 @@ import { Grid, Snackbar } from "@material-ui/core";
 import AppNavbar from "./componentes/Navegacion/AppNavbar";
 import { useStateValue } from "./contexto/store";
 import { obtenerUsuarioActual } from "./actions/UsuarioAction";
+import RutaSegura from "./componentes/Navegacion/RutaSegura";
 
 function App() {
   // obtengo la referencia de la variable global de usuario
@@ -63,8 +64,9 @@ function App() {
                 path="/auth/registrar"
                 component={RegistrarUsuario}
               />
-              <Route exact path="/auth/perfil" component={PerfilUsuario} />
-              <Route exact path="/" component={PerfilUsuario} />
+
+              <RutaSegura exact path="/auth/perfil" component={PerfilUsuario} />
+              <RutaSegura exact path="/" component={PerfilUsuario} />
             </Switch>
           </Grid>
         </MuithemeProvider>
