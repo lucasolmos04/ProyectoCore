@@ -31,7 +31,7 @@ namespace Aplicacion.Documentos
             }
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
-                var documento = await _cursosOnlineContext.Documento.Where(x => x.ObjetoReferencia == request.ObjetoReferencia).FirstAsync();
+                var documento = await _cursosOnlineContext.Documento.Where(x => x.ObjetoReferencia == request.ObjetoReferencia).FirstOrDefaultAsync();
                 if (documento == null)
                 {
                     var doc = new Documento
@@ -40,7 +40,8 @@ namespace Aplicacion.Documentos
                         Nombre = request.Nombre,
                         Extension = request.Extension,
                         DocumentoId = Guid.NewGuid(),
-                        FechaCreacion = DateTime.UtcNow
+                        FechaCreacion = DateTime.UtcNow,
+                        ObjetoReferencia = request.ObjetoReferencia == null ? Guid.Empty : request.ObjetoReferencia
                     };
                     _cursosOnlineContext.Documento.Add(doc);
                 }
