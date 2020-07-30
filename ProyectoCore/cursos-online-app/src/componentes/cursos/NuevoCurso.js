@@ -12,9 +12,13 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers"; // Layout de fechas
 import DateFnsUtils from "@date-io/date-fns"; // Da soporte a las fechas
+import ImageUploader from "react-images-upload";
+import { v4 as uuidv4 } from "uuid";
+import { obtenerDataImagen } from "../../actions/ImagenAction";
 
 const NuevoCurso = () => {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
+  const [imageCurso, setImagenCurso] = useState(null);
   const [curso, setCurso] = useState({
     titulo: "",
     descripcion: "",
@@ -30,6 +34,15 @@ const NuevoCurso = () => {
       [name]: value, // Setea el valor de la caja de texto
     }));
   };
+
+  const subirFoto = (imagenes) => {
+    const foto = imagenes[0];
+    obtenerDataImagen(foto).then((respuesta) => {
+      setImagenCurso(respuesta);
+    });
+  };
+
+  const fotoKey = uuidv4();
 
   return (
     <Container component="main" maxWidth="md" justify="center">
@@ -94,6 +107,17 @@ const NuevoCurso = () => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <ImageUploader
+                withIcon={false}
+                key={fotoKey}
+                singleImage={true}
+                buttonText="Seleccion image del curso"
+                onChange={subirFoto}
+                imgExtension={[".jpg", ".gif", "png", ".jpeg"]}
+                maxFileSize={5242880}
+              />
             </Grid>
           </Grid>
           <Grid container justify="center">
