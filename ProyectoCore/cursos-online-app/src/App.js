@@ -11,6 +11,7 @@ import AppNavbar from "./componentes/Navegacion/AppNavbar";
 import { useStateValue } from "./contexto/store";
 import { obtenerUsuarioActual } from "./actions/UsuarioAction";
 import RutaSegura from "./componentes/Navegacion/RutaSegura";
+import NuevoCurso from "./componentes/cursos/NuevoCurso";
 
 function App() {
   // obtengo la referencia de la variable global de usuario
@@ -67,6 +68,7 @@ function App() {
 
               <RutaSegura exact path="/auth/perfil" component={PerfilUsuario} />
               <RutaSegura exact path="/" component={PerfilUsuario} />
+              <RutaSegura exact path="/curso/nuevo" component={NuevoCurso} />
             </Switch>
           </Grid>
         </MuithemeProvider>
