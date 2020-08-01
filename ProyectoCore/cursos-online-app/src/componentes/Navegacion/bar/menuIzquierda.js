@@ -22,7 +22,7 @@ export const MenuIzquierda = ({ classes }) => (
           primary="Nuevo Curso"
         />
       </ListItem>
-      <ListItem component={Link} button to="/curso/lista">
+      <ListItem component={Link} button to="/curso/paginador">
         <i className="material-icons">menu_book</i>
         <ListItemText
           classes={{ primary: classes.listItemText }}
