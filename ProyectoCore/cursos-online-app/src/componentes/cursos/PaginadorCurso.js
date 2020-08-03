@@ -35,6 +35,7 @@ const PaginadorCurso = () => {
     const obtenerListaCurso = async () => {
       let tituloVariant = "";
       let paginaVariant = paginadorRequest.numeroPagina + 1;
+
       if (typingBuscadorTexto) {
         tituloVariant = typingBuscadorTexto;
         paginaVariant = 1;

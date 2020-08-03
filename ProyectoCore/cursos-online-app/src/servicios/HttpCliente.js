@@ -1,6 +1,8 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:59253/api";
+// axios.defaults.baseURL = "http://localhost:59253/api";
+axios.defaults.baseURL =
+  "https://cursosonlineapplication.azurewebsites.net/api";
 
 axios.interceptors.request.use(
   (config) => {

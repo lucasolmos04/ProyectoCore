@@ -140,16 +140,26 @@ namespace WebAPI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
            {
                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cursos Online v1");
            });
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                // Configuramos el controller de navegacion que se usara como inicio
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=index}/{id}"
+                );
+
+                endpoints.MapFallbackToController("Index", "Home");
+            });
         }
     }
 }
